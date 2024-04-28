@@ -1,7 +1,7 @@
-var qrSizeHeight = '128'
-var qrSizeWidth = '128'
-var qrOffsetWidth = '128'
-var qrOffsetHeight = '128'
+var qrSizeHeight = '96'
+var qrSizeWidth = '96'
+var qrOffsetWidth = '64'
+var qrOffsetHeight = '64'
 var videoUrl = null
 
 // TODO:
@@ -87,6 +87,7 @@ function createQROverlay() {
   qrOverlay.style.top = qrOffsetHeight + 'px';
   qrOverlay.style.right = qrOffsetWidth + 'px';
   qrOverlay.style.zIndex = '1000';
+  qrOverlay.style.outline = "3px solid white"
 
   console.log("YTATTRIBUTION --------createQROverlay-------- videoUrl href = " + window.location.href)
 
@@ -113,7 +114,7 @@ function createQROverlay() {
   playerElement.appendChild(qrOverlay);
   }
   else {
-    console.log("YTATTRIBUTION --------createQROverlay-------- waiting for player")
+    console.log("YTATTRIBUTION --------createQROverlay-------- waiting for player to load")
     sleep(800).then(() => {
       createQROverlay();
       return;

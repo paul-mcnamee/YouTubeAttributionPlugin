@@ -9,10 +9,8 @@
  * @see <a href="http://jeromeetienne.github.com/jquery-qrcode/" target="_blank">http://jeromeetienne.github.com/jquery-qrcode/</a>
  */
 var QRCode;
-	console.log("dookie3");
 
 (function () {
-	console.log("dookie2");
 	//---------------------------------------------------------------------
 	// QRCode for JavaScript
 	//
