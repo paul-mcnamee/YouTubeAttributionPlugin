@@ -41,7 +41,6 @@ function logMessage(message) {
 }
 
 function getQRSize() {
-  // qrSizeInput = document.querySelector("#qrSizeInput");
   chrome.storage.sync.get(["qrSize"]).then((result) => {
     logMessage("YTATTRIBUTION --------  got qrSize  result.qrSize = " + result.qrSize)
     if (result === null || typeof result === "undefined" || !result.qrSize) {
@@ -59,7 +58,6 @@ function getQRSize() {
 }
 
 function setQRSize() {
-  // qrSizeInput = document.querySelector("#qrSizeInput");
   if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
     qrSizeInput.addEventListener("input", (event) => {
       chrome.storage.sync.set({ qrSize: event.target.value }).then(() => {
@@ -217,11 +215,11 @@ function createQROverlay() {
     qrOverlay.appendChild(qrDiv);
 
     // Add the label to the bottom of the QR code.
-    const qrLabelEl = document.createElement('div');
-    qrLabelEl.id = 'qrLabel';
-    qrLabelEl.style = 'text-align: center; margin-top: 5px; color: white; font-size: 1.2em;'
-    qrLabelEl.textContent = qrLabel;
-    qrOverlay.appendChild(qrLabelEl);
+    const qrLabelElement = document.createElement('div');
+    qrLabelElement.id = 'qrLabel';
+    qrLabelElement.style = 'text-align: center; margin-top: 5px; color: white; font-size: 1.3em;'
+    qrLabelElement.textContent = qrLabel;
+    qrOverlay.appendChild(qrLabelElement);
 
 
     logMessage("YTATTRIBUTION --------createQROverlay-------- Appending new qrOverlay" + qrOverlay)
