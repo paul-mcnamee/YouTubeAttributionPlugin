@@ -10,10 +10,6 @@
             padding: 10px;
             font-family: Arial, sans-serif;
         }
-        #qrCode {
-            width: 100%;
-            margin-bottom: 10px;
-        }
         button {
             width: 100%;
             padding: 5px;
@@ -22,8 +18,22 @@
         }
     </style>
 </head>
-<body>
-    YouTube Attribution
+    <body>
+        <h2>YouTube Attribution</h2>
+        <div>
+            <p>QR Size (px): <output id="qrSizeInputValue"></output></p>
+            <input type="number" id="qrSizeInput" name="qrSizeInput" min="64" max="512" step="8" />
+        </div>
 
-</body>
+        <div>
+            <p>Height Offset (px): <output id="qrHeightOffsetInputValue"></output></p>
+            <input type="number" id="qrHeightOffsetInput" name="qrHeightOffsetInput" min="0" max="4000" value="10" step="1" />
+        </div>
+
+        <div>
+            <p>Width Offset (px): <output id="qrWidthOffsetInputValue"></output></p>
+            <input type="number" id="qrWidthOffsetInput" name="qrWidthOffsetInput" min="0" max="4000" value="10" step="1" />
+        </div>
+    </body>
+    <script src="./scripts/content.js"></script>
 </html>
