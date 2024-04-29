@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Overlay Extension</title>
-    <style>
-        body {
-            width: 200px;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-        }
-        button {
-            width: 100%;
-            padding: 5px;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
 </head>
-    <body>
-        <h2>YouTube Attribution</h2>
-        <div>
-            <p>QR Size (px): <output id="qrSizeInputValue"></output></p>
-            <input type="number" id="qrSizeInput" name="qrSizeInput" min="64" max="512" step="8" />
-        </div>
 
-        <div>
-            <p>Height Offset (px): <output id="qrHeightOffsetInputValue"></output></p>
-            <input type="number" id="qrHeightOffsetInput" name="qrHeightOffsetInput" min="0" max="4000" value="10" step="1" />
+<body>
+    <div class="m-3">
+        <h1 class="title has-text-centered">YouTube Attribution</h1>
+    </div>
+    <div class="container is-fluid fixed-grid has-1-cols">
+        <div class="mb-3">
+            <label class="label">QR Size (px):</label>
+            <input class="input" type="number" id="qrSizeInput" name="qrSizeInput" min="64" max="512" step="8" />
         </div>
+        <div class="mb-3">
+            <label class="label">Height Offset (px):</label>
+            <input class="input" type="number" id="qrHeightOffsetInput" name="qrHeightOffsetInput" min="0" max="4000"
+                value="10" step="1" />
+        </div>
+        <div class="mb-3">
+            <label class="label">Width Offset (px):</label>
+            <input class="input" type="number" id="qrWidthOffsetInput" name="qrWidthOffsetInput" min="0" max="4000"
+                value="10" step="1" />
+        </div>
+        <div class="mb-3">
+            <label class="label">Bottom Label:</label>
+            <input class="input" type="text" id="qrLabelInput" name="qrLabelInput" maxlength="50" />
+        </div>
+    </div>
+    <div class="has-text-centered">
+        <a href="https://github.com/paul-mcnamee/YouTubeAttributionPlugin" target="_blank" class="href">
+            <div class="has-text-centered">
+                Paul McNamee's Source Code
+            </div>
+        </a>
+    </div>
+</body>
+<script src="./scripts/content.js"></script>
 
-        <div>
-            <p>Width Offset (px): <output id="qrWidthOffsetInputValue"></output></p>
-            <input type="number" id="qrWidthOffsetInput" name="qrWidthOffsetInput" min="0" max="4000" value="10" step="1" />
-        </div>
-        <div>
-            <p>Label: <output id="qrLabelInputValue"></output></p>
-            <input type="text" id="qrLabelInput" name="qrLabelInput" maxlength="50" />
-        </div>
-    </body>
-    <script src="./scripts/content.js"></script>
 </html>
