@@ -26,8 +26,7 @@
         "scripts/qr.js"
       ],
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "https://*.youtube.com/*"
       ]
     }
   ],
