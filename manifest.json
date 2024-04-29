@@ -6,17 +6,14 @@
   "permissions": [
     "activeTab",
     "storage",
-
     "scripting"
-  ],
-  "host_permissions": [
-    "*://*/"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://*.youtube.com/*",
-        "https://www.youtube-nocookie.com/embed/*"],
+        "https://www.youtube-nocookie.com/embed/*"
+      ],
       "js": [
         "scripts/qr.js",
         "scripts/content.js"
@@ -26,10 +23,13 @@
   "web_accessible_resources": [
     {
       "resources": [
-      "scripts/qr.js"
-    ],
-    "matches": ["http://*/*", "https://*/*"]
-  }
+        "scripts/qr.js"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
+    }
   ],
   "icons": {
     "16": "images/icon-16.png",

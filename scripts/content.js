@@ -1,13 +1,3 @@
-// TODO:
-//
-//      2. fix the bugs for not having the correct url
-//      3. add a donation option in the popup.html page -- link to the cofi page or whatever
-//      4. upload to the chrome store - https://chrome.google.com/webstore/devconsole/0132d04a-6270-4514-8db7-5457ddd9f8f2
-
-
-// TODO: currently there is a bug where if you have a video paused and select another one then the URL for the QR code is stale...
-//      stale if the video ends and another recommendation is clicked as well
-
 var enableLogging = false;
 
 var qrSizeDefault = 128;
@@ -40,115 +30,136 @@ function logMessage(message) {
   }
 }
 
+// NOTE: probably could clean this stuff up but it is nice to have them as separate methods for debugging.
 function getQRSize() {
-  chrome.storage.sync.get(["qrSize"]).then((result) => {
-    logMessage("YTATTRIBUTION --------  got qrSize  result.qrSize = " + result.qrSize)
-    if (result === null || typeof result === "undefined" || !result.qrSize) {
-      logMessage("YTATTRIBUTION --------  setting default for qrSize");
-      result.qrSize = qrSizeDefault;
-      chrome.storage.sync.set({ qrSize: qrSizeDefault });
-    }
-
-    if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
-      qrSizeInput.value = result.qrSize;
-    }
-
-    qrSize = result.qrSize;
-  });
+  if (chrome.runtime?.id) {
+    chrome.storage.sync.get(["qrSize"]).then((result) => {
+      logMessage("YTATTRIBUTION --------  got qrSize  result.qrSize = " + result.qrSize)
+      if (result === null || typeof result === "undefined" || !result.qrSize) {
+        logMessage("YTATTRIBUTION --------  setting default for qrSize");
+        result.qrSize = qrSizeDefault;
+        chrome.storage.sync.set({ qrSize: qrSizeDefault });
+      }
+      if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
+        qrSizeInput.value = result.qrSize;
+      }
+      qrSize = result.qrSize;
+    });
+  }
 }
 
 function setQRSize() {
-  if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
-    qrSizeInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({ qrSize: event.target.value }).then(() => {
-        logMessage("YTATTRIBUTION -------- set qrSize = " + event.target.value);
-        qrSizeInputValue.textContent = event.target.value;
-      })
-    });
+  if (chrome.runtime?.id) {
+    if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
+      qrSizeInput.addEventListener("input", (event) => {
+        chrome.storage.sync.set({ qrSize: event.target.value }).then(() => {
+          logMessage("YTATTRIBUTION -------- set qrSize = " + event.target.value);
+          if (qrSizeInputValue === null || typeof qrSizeInputValue === "undefined") {
+            return
+          }
+          qrSizeInputValue.textContent = event.target.value;
+        })
+      });
+    }
   }
 }
 
 function getQRHeightOffset() {
-  chrome.storage.sync.get(["qrHeightOffset"]).then((result) => {
-    logMessage("YTATTRIBUTION --------  got qrHeightOffset = " + result.qrHeightOffset)
-    if (result === null || typeof result === "undefined" || !result.qrHeightOffset) {
-      logMessage("YTATTRIBUTION --------  setting default for qrHeightOffset");
-      result.qrHeightOffset = qrOffsetHeightDefault;
-      chrome.storage.sync.set({ qrHeightOffset: result.qrHeightOffset });
-    }
-
-    if (qrHeightOffsetInput != null && typeof qrHeightOffsetInput != "undefined") {
-      qrHeightOffsetInput.value = result.qrHeightOffset;
-    }
-
-    qrOffsetHeight = result.qrHeightOffset;
-  });
+  if (chrome.runtime?.id) {
+    chrome.storage.sync.get(["qrHeightOffset"]).then((result) => {
+      logMessage("YTATTRIBUTION --------  got qrHeightOffset = " + result.qrHeightOffset)
+      if (result === null || typeof result === "undefined" || !result.qrHeightOffset) {
+        logMessage("YTATTRIBUTION --------  setting default for qrHeightOffset");
+        result.qrHeightOffset = qrOffsetHeightDefault;
+        chrome.storage.sync.set({ qrHeightOffset: result.qrHeightOffset });
+      }
+      if (qrHeightOffsetInput != null && typeof qrHeightOffsetInput != "undefined") {
+        qrHeightOffsetInput.value = result.qrHeightOffset;
+      }
+      qrOffsetHeight = result.qrHeightOffset;
+    });
+  }
 }
 
 function setQRHeightOffset() {
-  if (qrHeightOffsetInput != null && typeof qrHeightOffsetInput != "undefined") {
-    qrHeightOffsetInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({ qrHeightOffset: event.target.value }).then(() => {
-        logMessage("YTATTRIBUTION -------- set qrHeightOffset = " + event.target.value);
-        qrHeightOffsetInputValue.textContent = event.target.value;
-      })
-    });
+  if (chrome.runtime?.id) {
+    if (qrHeightOffsetInput != null && typeof qrHeightOffsetInput != "undefined") {
+      qrHeightOffsetInput.addEventListener("input", (event) => {
+        chrome.storage.sync.set({ qrHeightOffset: event.target.value }).then(() => {
+          logMessage("YTATTRIBUTION -------- set qrHeightOffset = " + event.target.value);
+          if (qrHeightOffsetInputValue === null || typeof qrHeightOffsetInputValue === "undefined") {
+            return;
+          }
+          qrHeightOffsetInputValue.textContent = event.target.value;
+        })
+      });
+    }
   }
 }
 
 function getQRWidthOffset() {
-  chrome.storage.sync.get(["qrWidthOffset"]).then((result) => {
-    logMessage("YTATTRIBUTION --------  got qrWidthOffset = " + result.qrWidthOffset)
-    if (result === null || typeof result === "undefined" || !result.qrWidthOffset) {
-      logMessage("YTATTRIBUTION --------  setting default for qrWidthOffset");
-      result.qrWidthOffset = qrOffsetWidthDefault;
-      chrome.storage.sync.set({ qrWidthOffset: result.qrWidthOffset });
-    }
-
-    if (qrWidthOffsetInput != null && typeof qrWidthOffsetInput != "undefined") {
-      qrWidthOffsetInput.value = result.qrWidthOffset;
-    }
-
-    qrOffsetWidth = result.qrWidthOffset;
-  });
-}
-
-function setQRWidthOffset() {
-  if (qrWidthOffsetInput != null && typeof qrWidthOffsetInput != "undefined") {
-    qrWidthOffsetInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({ qrWidthOffset: event.target.value }).then(() => {
-        logMessage("YTATTRIBUTION -------- set qrWidthOffset = " + event.target.value);
-        qrWidthOffsetInputValue.textContent = event.target.value;
-      })
+  if (chrome.runtime?.id) {
+    chrome.storage.sync.get(["qrWidthOffset"]).then((result) => {
+      logMessage("YTATTRIBUTION --------  got qrWidthOffset = " + result.qrWidthOffset)
+      if (result === null || typeof result === "undefined" || !result.qrWidthOffset) {
+        logMessage("YTATTRIBUTION --------  setting default for qrWidthOffset");
+        result.qrWidthOffset = qrOffsetWidthDefault;
+        chrome.storage.sync.set({ qrWidthOffset: result.qrWidthOffset });
+      }
+      if (qrWidthOffsetInput != null && typeof qrWidthOffsetInput != "undefined") {
+        qrWidthOffsetInput.value = result.qrWidthOffset;
+      }
+      qrOffsetWidth = result.qrWidthOffset;
     });
   }
 }
 
+function setQRWidthOffset() {
+  if (chrome.runtime?.id) {
+    if (qrWidthOffsetInput != null && typeof qrWidthOffsetInput != "undefined") {
+      qrWidthOffsetInput.addEventListener("input", (event) => {
+        chrome.storage.sync.set({ qrWidthOffset: event.target.value }).then(() => {
+          logMessage("YTATTRIBUTION -------- set qrWidthOffset = " + event.target.value);
+          if (qrWidthOffsetInputValue === null || typeof qrWidthOffsetInputValue === "undefined") {
+            return;
+          }
+          qrWidthOffsetInputValue.textContent = event.target.value;
+        })
+      });
+    }
+  }
+}
+
 function getQRLabel() {
-  chrome.storage.sync.get(["qrLabel"]).then((result) => {
-    logMessage("YTATTRIBUTION --------  got qrLabel  result.qrLabel = " + result.qrLabel)
-    if (result === null || typeof result === "undefined" || !result.qrLabel) {
-      logMessage("YTATTRIBUTION --------  setting default for qrLabel");
-      result.qrLabel = qrLabelDefault;
-      chrome.storage.sync.set({ qrLabel: qrLabelDefault });
-    }
-
-    if (qrLabelInput != null && typeof qrLabelInput != "undefined") {
-      qrLabelInput.value = result.qrLabel;
-    }
-
-    qrLabel = result.qrLabel;
-  });
+  if (chrome.runtime?.id) {
+    chrome.storage.sync.get(["qrLabel"]).then((result) => {
+      logMessage("YTATTRIBUTION --------  got qrLabel  result.qrLabel = " + result.qrLabel)
+      if (result === null || typeof result === "undefined" || !result.qrLabel) {
+        logMessage("YTATTRIBUTION --------  setting default for qrLabel");
+        result.qrLabel = qrLabelDefault;
+        chrome.storage.sync.set({ qrLabel: qrLabelDefault });
+      }
+      if (qrLabelInput != null && typeof qrLabelInput != "undefined") {
+        qrLabelInput.value = result.qrLabel;
+      }
+      qrLabel = result.qrLabel;
+    });
+  }
 }
 
 function setQRLabel() {
-  if (qrLabelInput != null && typeof qrLabelInput != "undefined") {
-    qrLabelInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({ qrLabel: event.target.value }).then(() => {
-        logMessage("YTATTRIBUTION -------- set qrLabel = " + event.target.value);
-        qrLabelInputValue.textContent = event.target.value;
-      })
-    });
+  if (chrome.runtime?.id) {
+    if (qrLabelInput != null && typeof qrLabelInput != "undefined") {
+      qrLabelInput.addEventListener("input", (event) => {
+        chrome.storage.sync.set({ qrLabel: event.target.value }).then(() => {
+          logMessage("YTATTRIBUTION -------- set qrLabel = " + event.target.value);
+          if (qrLabelInputValue === null || typeof qrLabelInputValue === "undefined") {
+            return
+          }
+          qrLabelInputValue.textContent = event.target.value;
+        })
+      });
+    }
   }
 }
 
@@ -157,15 +168,15 @@ function sleep(time) {
 }
 
 // Function to create a QR code overlay
-function createQROverlay() {
+function createQROverlay(url) {
   logMessage("YTATTRIBUTION --------createQROverlay-------- createQROverlay")
 
-  videoUrl = window.location.href;
+  videoUrl = url;
 
   if (videoUrl === null || typeof videoUrl === "undefined" || videoUrl === "https://www.youtube.com/") {
     logMessage("YTATTRIBUTION --------createQROverlay-------- videoUrl null!!!!")
     sleep(800).then(() => {
-      createQROverlay();
+      createQROverlay(window.location.href);
       return;
     });
   }
@@ -230,7 +241,7 @@ function createQROverlay() {
   else {
     logMessage("YTATTRIBUTION --------createQROverlay-------- waiting for player to load")
     sleep(800).then(() => {
-      createQROverlay();
+      createQROverlay(window.location.href);
       return;
     });
   }
@@ -251,12 +262,13 @@ window.addEventListener("load", function load(event) {
 
   window.navigation.addEventListener("navigate", (event) => {
     logMessage("YTATTRIBUTION ----navigate---- location changed!");
-    createQROverlay();
+    videoUrl = "https://www.youtube.com/"
+    createQROverlay(event.destination.url);
   })
 
   player = document.querySelector("video");
   if (player) {
     logMessage("YTATTRIBUTION --------player-------- found player");
-    createQROverlay();
+    createQROverlay(window.location.href);
   }
 }, false);
