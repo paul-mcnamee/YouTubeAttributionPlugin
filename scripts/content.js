@@ -10,38 +10,44 @@
 
 var enableLogging = false;
 
-var qrSizeDefault = '96';
+var qrSizeDefault = 128;
 var qrSize;
 
-var qrOffsetWidthDefault = '64';
+var qrOffsetWidthDefault = 20;
 var qrOffsetWidth;
 
-var qrOffsetHeightDefault = '64';
+var qrOffsetHeightDefault = 20;
 var qrOffsetHeight;
+
+var qrLabelDefault = "^ Current Video URL ^";
+var qrLabel;
 
 var videoUrl = null;
 
-var qrSizeInput = document.querySelector("#qrSizeInput");
-var qrHeightOffsetInput = document.querySelector("#qrHeightOffsetInput");
-var qrWidthOffsetInput = document.querySelector("#qrWidthOffsetInput");
-var qrSizeInputValue = document.querySelector("#qrSizeInputValue");
-var qrHeightOffsetInputValue = document.querySelector("#qrHeightOffsetInputValue");
-var qrWidthOffsetInputValue = document.querySelector("#qrWidthOffsetInputValue");
+const qrSizeInput = document.querySelector("#qrSizeInput");
+const qrHeightOffsetInput = document.querySelector("#qrHeightOffsetInput");
+const qrWidthOffsetInput = document.querySelector("#qrWidthOffsetInput");
+const qrLabelInput = document.querySelector("#qrLabelInput");
 
-function logMessage(message){
+const qrSizeInputValue = document.querySelector("#qrSizeInputValue");
+const qrHeightOffsetInputValue = document.querySelector("#qrHeightOffsetInputValue");
+const qrWidthOffsetInputValue = document.querySelector("#qrWidthOffsetInputValue");
+const qrLabelInputValue = document.querySelector("#qrLabelInputValue");
+
+function logMessage(message) {
   if (enableLogging) {
     console.log(message);
   }
 }
 
 function getQRSize() {
-  qrSizeInput = document.querySelector("#qrSizeInput");
+  // qrSizeInput = document.querySelector("#qrSizeInput");
   chrome.storage.sync.get(["qrSize"]).then((result) => {
     logMessage("YTATTRIBUTION --------  got qrSize  result.qrSize = " + result.qrSize)
     if (result === null || typeof result === "undefined" || !result.qrSize) {
       logMessage("YTATTRIBUTION --------  setting default for qrSize");
       result.qrSize = qrSizeDefault;
-      chrome.storage.sync.set({qrSize: qrSizeDefault});
+      chrome.storage.sync.set({ qrSize: qrSizeDefault });
     }
 
     if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
@@ -53,10 +59,10 @@ function getQRSize() {
 }
 
 function setQRSize() {
-  qrSizeInput = document.querySelector("#qrSizeInput");
+  // qrSizeInput = document.querySelector("#qrSizeInput");
   if (qrSizeInput != null && typeof qrSizeInput != "undefined") {
     qrSizeInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({qrSize: event.target.value}).then( () => {
+      chrome.storage.sync.set({ qrSize: event.target.value }).then(() => {
         logMessage("YTATTRIBUTION -------- set qrSize = " + event.target.value);
         qrSizeInputValue.textContent = event.target.value;
       })
@@ -70,7 +76,7 @@ function getQRHeightOffset() {
     if (result === null || typeof result === "undefined" || !result.qrHeightOffset) {
       logMessage("YTATTRIBUTION --------  setting default for qrHeightOffset");
       result.qrHeightOffset = qrOffsetHeightDefault;
-      chrome.storage.sync.set({qrHeightOffset: result.qrHeightOffset});
+      chrome.storage.sync.set({ qrHeightOffset: result.qrHeightOffset });
     }
 
     if (qrHeightOffsetInput != null && typeof qrHeightOffsetInput != "undefined") {
@@ -84,7 +90,7 @@ function getQRHeightOffset() {
 function setQRHeightOffset() {
   if (qrHeightOffsetInput != null && typeof qrHeightOffsetInput != "undefined") {
     qrHeightOffsetInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({qrHeightOffset: event.target.value}).then( () => {
+      chrome.storage.sync.set({ qrHeightOffset: event.target.value }).then(() => {
         logMessage("YTATTRIBUTION -------- set qrHeightOffset = " + event.target.value);
         qrHeightOffsetInputValue.textContent = event.target.value;
       })
@@ -98,7 +104,7 @@ function getQRWidthOffset() {
     if (result === null || typeof result === "undefined" || !result.qrWidthOffset) {
       logMessage("YTATTRIBUTION --------  setting default for qrWidthOffset");
       result.qrWidthOffset = qrOffsetWidthDefault;
-      chrome.storage.sync.set({qrWidthOffset: result.qrWidthOffset});
+      chrome.storage.sync.set({ qrWidthOffset: result.qrWidthOffset });
     }
 
     if (qrWidthOffsetInput != null && typeof qrWidthOffsetInput != "undefined") {
@@ -112,7 +118,7 @@ function getQRWidthOffset() {
 function setQRWidthOffset() {
   if (qrWidthOffsetInput != null && typeof qrWidthOffsetInput != "undefined") {
     qrWidthOffsetInput.addEventListener("input", (event) => {
-      chrome.storage.sync.set({qrWidthOffset: event.target.value}).then( () => {
+      chrome.storage.sync.set({ qrWidthOffset: event.target.value }).then(() => {
         logMessage("YTATTRIBUTION -------- set qrWidthOffset = " + event.target.value);
         qrWidthOffsetInputValue.textContent = event.target.value;
       })
@@ -120,7 +126,35 @@ function setQRWidthOffset() {
   }
 }
 
-function sleep (time) {
+function getQRLabel() {
+  chrome.storage.sync.get(["qrLabel"]).then((result) => {
+    logMessage("YTATTRIBUTION --------  got qrLabel  result.qrLabel = " + result.qrLabel)
+    if (result === null || typeof result === "undefined" || !result.qrLabel) {
+      logMessage("YTATTRIBUTION --------  setting default for qrLabel");
+      result.qrLabel = qrLabelDefault;
+      chrome.storage.sync.set({ qrLabel: qrLabelDefault });
+    }
+
+    if (qrLabelInput != null && typeof qrLabelInput != "undefined") {
+      qrLabelInput.value = result.qrLabel;
+    }
+
+    qrLabel = result.qrLabel;
+  });
+}
+
+function setQRLabel() {
+  if (qrLabelInput != null && typeof qrLabelInput != "undefined") {
+    qrLabelInput.addEventListener("input", (event) => {
+      chrome.storage.sync.set({ qrLabel: event.target.value }).then(() => {
+        logMessage("YTATTRIBUTION -------- set qrLabel = " + event.target.value);
+        qrLabelInputValue.textContent = event.target.value;
+      })
+    });
+  }
+}
+
+function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
@@ -130,8 +164,8 @@ function createQROverlay() {
 
   videoUrl = window.location.href;
 
-  if (videoUrl === null || typeof videoUrl === "undefined" || videoUrl === "https://www.youtube.com/"){
-  logMessage("YTATTRIBUTION --------createQROverlay-------- videoUrl null!!!!")
+  if (videoUrl === null || typeof videoUrl === "undefined" || videoUrl === "https://www.youtube.com/") {
+    logMessage("YTATTRIBUTION --------createQROverlay-------- videoUrl null!!!!")
     sleep(800).then(() => {
       createQROverlay();
       return;
@@ -143,8 +177,7 @@ function createQROverlay() {
   if (playerElement) {
     logMessage("YTATTRIBUTION --------createQROverlay-------- found full bleed container")
     oldQr = document.getElementById("qrOverlay")
-    if (oldQr)
-    {
+    if (oldQr) {
       logMessage("YTATTRIBUTION --------createQROverlay-------- removing old QR code")
       oldQr.remove();
     }
@@ -160,20 +193,21 @@ function createQROverlay() {
     qrOverlay.style.top = qrOffsetHeight + 'px';
     qrOverlay.style.right = qrOffsetWidth + 'px';
     qrOverlay.style.zIndex = '1000';
-    qrOverlay.style.outline = "3px solid white"
+
 
     logMessage("YTATTRIBUTION --------createQROverlay-------- videoUrl href = " + window.location.href)
 
     const qrDiv = document.createElement('div');
     qrDiv.id = 'qrcode';
+    qrDiv.style.outline = "3px solid white"
 
     // Generate the QR code
     const qr = new QRCode(qrDiv, {
       text: videoUrl,
       width: qrSize,
       height: qrSize,
-      colorDark : '#000',
-      colorLight : '#fff',
+      colorDark: '#000',
+      colorLight: '#fff',
     });
 
     logMessage("YTATTRIBUTION --------createQROverlay-------- videoUrl href = " + window.location.href)
@@ -181,6 +215,14 @@ function createQROverlay() {
     qr.clear();
     qr.makeCode(videoUrl);
     qrOverlay.appendChild(qrDiv);
+
+    // Add the label to the bottom of the QR code.
+    const qrLabelEl = document.createElement('div');
+    qrLabelEl.id = 'qrLabel';
+    qrLabelEl.style = 'text-align: center; margin-top: 5px; color: white; font-size: 1.2em;'
+    qrLabelEl.textContent = qrLabel;
+    qrOverlay.appendChild(qrLabelEl);
+
 
     logMessage("YTATTRIBUTION --------createQROverlay-------- Appending new qrOverlay" + qrOverlay)
 
@@ -196,33 +238,27 @@ function createQROverlay() {
   }
 }
 
-window.addEventListener("load", function load(event){
-    logMessage("YTATTRIBUTION --------load-------- event listener for load");
+window.addEventListener("load", function load(event) {
+  logMessage("YTATTRIBUTION --------load-------- event listener for load");
 
-    qrSizeInput = document.querySelector("#qrSizeInput");
-    qrHeightOffsetInput = document.querySelector("#qrHeightOffsetInput");
-    qrWidthOffsetInput = document.querySelector("#qrWidthOffsetInput");
-    qrSizeInputValue = document.querySelector("#qrSizeInputValue");
-    qrHeightOffsetInputValue = document.querySelector("#qrHeightOffsetInputValue");
-    qrWidthOffsetInputValue = document.querySelector("#qrWidthOffsetInputValue");
+  getQRSize();
+  getQRHeightOffset();
+  getQRWidthOffset();
+  getQRLabel();
 
-    getQRSize();
-    getQRHeightOffset();
-    getQRWidthOffset();
+  setQRSize();
+  setQRHeightOffset();
+  setQRWidthOffset();
+  setQRLabel();
 
-    setQRSize();
-    setQRHeightOffset();
-    setQRWidthOffset();
+  window.navigation.addEventListener("navigate", (event) => {
+    logMessage("YTATTRIBUTION ----navigate---- location changed!");
+    createQROverlay();
+  })
 
-    window.navigation.addEventListener("navigate", (event) => {
-        logMessage("YTATTRIBUTION ----navigate---- location changed!");
-        createQROverlay()
-    })
-
-    player = document.querySelector("video");
-    if (player)
-    {
-      logMessage("YTATTRIBUTION --------player-------- found player");
-      createQROverlay()
-    }
-},false);
+  player = document.querySelector("video");
+  if (player) {
+    logMessage("YTATTRIBUTION --------player-------- found player");
+    createQROverlay();
+  }
+}, false);
