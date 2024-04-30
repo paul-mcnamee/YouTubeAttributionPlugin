@@ -4,9 +4,7 @@
   "version": "1.0",
   "description": "Overlay a QR code on YouTube videos.",
   "permissions": [
-    "activeTab",
-    "storage",
-    "scripting"
+    "storage"
   ],
   "content_scripts": [
     {
